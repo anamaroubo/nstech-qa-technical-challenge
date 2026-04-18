@@ -1,0 +1,22 @@
+{
+  "name": "nstech-qa-technical-challenge",
+  "version": "1.0.0",
+  "description": "Este repositório contém a resolução do teste técnico para a vaga de Quality Assurance, contemplando cenários de teste, automação e descrição da abordagem técnica adotada.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anamaroubo/nstech-qa-technical-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anamaroubo/nstech-qa-technical-challenge/issues"
+  },
+  "homepage": "https://github.com/anamaroubo/nstech-qa-technical-challenge#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0"
+  }
+}

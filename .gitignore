@@ -12,3 +12,10 @@ node_modules/
 
 # Git internals (extra segurança)
 FETCH_HEAD
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

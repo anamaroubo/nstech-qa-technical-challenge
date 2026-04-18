@@ -1,3 +1,4 @@
+
 # 🧪 QA Technical Challenge - nstech
 
 Este repositório contém a resolução do teste técnico para a vaga de Quality Assurance, contemplando cenários de teste, automação e descrição da abordagem técnica adotada.
@@ -17,7 +18,6 @@ Demonstrar habilidades em:
 ---
 
 ## 🧱 Estrutura do Projeto
-
 .
 ├── etapa-1/
 │ ├── front-end/
@@ -27,6 +27,12 @@ Demonstrar habilidades em:
 │
 ├── etapa-2/
 │ ├── front-end/
+│ │ ├── login.spec.js
+│ │ ├── inventory.spec.js
+│ │ ├── cart.spec.js
+│ │ ├── checkout.spec.js
+│ │ ├── pages/
+│ │ └── utils/
 │ └── api/
 │
 ├── etapa-3/
@@ -35,6 +41,7 @@ Demonstrar habilidades em:
 └── evidencias/
 ├── front-end/
 └── api/
+
 ---
 
 ## ✅ Etapa 1 — Escrita de Cenários
@@ -69,14 +76,40 @@ Aplicação: BrasilAPI
 Automação dos cenários definidos na etapa 1.
 
 ### 🔹 Front-end
-- Automação de fluxos de usuário (UI)
-- Interação com elementos da interface
-- Validação de comportamento esperado
+
+A automação foi desenvolvida utilizando **Playwright**, com foco em boas práticas de organização e manutenção.
+
+#### 🧩 Arquitetura adotada
+
+- Separação dos testes por feature:
+  - `login.spec.js`
+  - `inventory.spec.js`
+  - `cart.spec.js`
+  - `checkout.spec.js`
+
+- Utilização do padrão **Page Object Model (POM)**:
+  - `LoginPage`
+  - `InventoryPage`
+  - `CheckoutPage`
+
+- Reaproveitamento de código:
+  - Função de login centralizada (`utils/auth`)
+  - Uso de `beforeEach` para cenários autenticados
+
+#### 🎯 Benefícios da abordagem
+
+- Melhor legibilidade dos testes
+- Redução de duplicação de código
+- Facilidade de manutenção
+- Escalabilidade para novos cenários
+
+---
 
 ### 🔹 API
+
 - Testes automatizados de endpoints
-- Validação de respostas e status code
-- Verificação de dados retornados
+- Validação de status code
+- Validação de estrutura e dados da resposta
 
 📁 Evidências disponíveis na pasta `/evidencias`
 
@@ -94,21 +127,27 @@ Descrição da estratégia adotada ao longo do teste:
 
 ## 🚀 Tecnologias utilizadas
 
-*(Serão definidas na etapa de automação)*
-
-Sugestão:
-- Front-end: Playwright ou Cypress  
-- API: Supertest, Postman ou outra ferramenta similar  
+- **Playwright** — automação de testes end-to-end (UI)
+- **JavaScript (Node.js)** — linguagem base
+- **BrasilAPI** — API pública para testes
 
 ---
 
-## 📎 Links utilizados
+## ▶️ Como executar os testes
 
-- SauceDemo: https://www.saucedemo.com/
-- BrasilAPI: https://brasilapi.com.br/docs
+### Instalar dependências
+```bash
+npm install
+Instalar browsers do Playwright
+npx playwright install
+Executar todos os testes
+npx playwright test
+Executar testes específicos
+npx playwright test --grep "nome do cenário"
 
----
+📎 Links utilizados
+SauceDemo: https://www.saucedemo.com/
+BrasilAPI: https://brasilapi.com.br/docs
 
-## 👩‍💻 Autora
-
+👩‍💻 Autora
 Ana Paula Maroubo

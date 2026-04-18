@@ -1,0 +1,14 @@
+# Node
+node_modules/
+
+# Environment
+.env
+
+# Mac
+.DS_Store
+
+# Logs
+*.log
+
+# Git internals (extra segurança)
+FETCH_HEAD

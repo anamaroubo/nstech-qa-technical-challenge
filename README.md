@@ -20,64 +20,91 @@ Demonstrar habilidades em:
 ## 🧱 Estrutura do Projeto
 .
 ├── etapa-1/
-│ ├── front-end/
-│ │ └── cenarios.md
-│ └── api/
-│ └── cenarios.md
+│   ├── front-end/
+│   │   └── cenarios.md
+│   └── api/
+│       └── cenarios.md
 │
 ├── etapa-2/
-│ ├── front-end/
-│ │ ├── login.spec.js
-│ │ ├── inventory.spec.js
-│ │ ├── cart.spec.js
-│ │ ├── checkout.spec.js
-│ │ ├── pages/
-│ │ └── utils/
-│ └── api/
+│   └── tests/
+│       ├── front-end/
+│       │   ├── login.spec.js
+│       │   ├── cart.spec.js
+│       │   ├── checkout.spec.js
+│       │   ├── pages/
+│       │   │   ├── LoginPage.js
+│       │   │   ├── InventoryPage.js
+│       │   │   └── CheckoutPage.js
+│       │   └── utils/
+│       │       └── auth.js
+│       │
+│       └── api/
+│           ├── cep.spec.js
+│           ├── cnpj.spec.js
+│           ├── performance.spec.js
+│           └── utils/
+│               └── testData.js
 │
 ├── etapa-3/
-│ └── abordagem.md
+│   └── abordagem.md
 │
-└── evidencias/
-├── front-end/
-└── api/
+├── playwright.config.js
+├── package.json
+└── README.md
 
 ---
 
 ## ✅ Etapa 1 — Escrita de Cenários
 
-Nesta etapa foram elaborados cenários de teste para dois contextos distintos:
+Foram definidos cenários de teste para:
 
-### 🔹 Front-end
-Aplicação: SauceDemo (e-commerce de testes)
+🔹 Front-end (SauceDemo)
+Login (válido, inválido, bloqueado)
+Carrinho (adicionar, remover, visualizar)
+Checkout (fluxo completo e validações)
+Ordenação de produtos
 
-- Validação de fluxos principais (login, navegação, carrinho e checkout)
-- Testes positivos e negativos
-- Validação de comportamento da interface
+🔹 API (BrasilAPI)
+Consulta de CEP (válido, inválido, inexistente)
+Consulta de CNPJ (válido e inválido)
+Validação de estrutura de resposta
+Validação de tempo de resposta
 
-### 🔹 API
-Aplicação: BrasilAPI
-
-- Validação de endpoints públicos
-- Testes de contrato (estrutura de resposta)
-- Validação de status code e dados retornados
-
-### 🧠 Técnicas aplicadas
-
-- Partição de equivalência
-- Análise de valor limite
-- Testes baseados em fluxo do usuário
-- Validação de contrato (API)
+🧠 Técnicas aplicadas
+Partição de equivalência
+Análise de valor limite
+Testes baseados em fluxo
+Testes negativos
+Validação de contrato (API)
 
 ---
 
-## 🤖 Etapa 2 — Automação
+🤖 Etapa 2 — Automação
 
-Automação dos cenários definidos na etapa 1.
+🔹 Front-end
 
-### 🔹 Front-end
+Automação utilizando Playwright + JavaScript
 
-A automação foi desenvolvida utilizando **Playwright**, com foco em boas práticas de organização e manutenção.
+Page Object Model (POM)
+Reutilização de login via helper
+Separação por domínio (login, carrinho, checkout)
+Uso de beforeEach para testes autenticados
+
+🔹 API
+
+Automação utilizando Playwright (API Testing)
+
+Cobertura:
+✅ Validação de status code
+✅ Testes positivos e negativos
+✅ Validação de contrato (estrutura JSON)
+✅ Teste de performance (tempo de resposta)
+
+Boas práticas aplicadas:
+Uso de baseURL no config
+Separação por domínio (cep, cnpj)
+Centralização de dados em testData.js
+Testes independentes e reutilizáveis
 
 #### 🧩 Arquitetura adotada
 
@@ -105,49 +132,39 @@ A automação foi desenvolvida utilizando **Playwright**, com foco em boas prát
 
 ---
 
-### 🔹 API
-
-- Testes automatizados de endpoints
-- Validação de status code
-- Validação de estrutura e dados da resposta
-
 📁 Evidências disponíveis na pasta `/evidencias`
 
 ---
 
-## 🧠 Etapa 3 — Abordagem
+🧠 Etapa 3 — Abordagem
 
-Descrição da estratégia adotada ao longo do teste:
+Nesta etapa será descrita a estratégia adotada, incluindo:
 
-- Critérios de escolha de ferramentas
-- Técnicas de teste utilizadas
-- Decisões técnicas e trade-offs
-
+Critérios de escolha de ferramentas
+Estruturação dos testes
+Estratégia de cobertura
+Decisões técnicas e trade-offs
 ---
 
-## 🚀 Tecnologias utilizadas
-
-- **Playwright** — automação de testes end-to-end (UI)
-- **JavaScript (Node.js)** — linguagem base
-- **BrasilAPI** — API pública para testes
-
+📎 APIs e aplicações utilizadas
+SauceDemo: https://www.saucedemo.com/
+BrasilAPI: https://brasilapi.com.br/docs
 ---
 
 ## ▶️ Como executar os testes
 
 ### Instalar dependências
-```bash
+
 npm install
+
 Instalar browsers do Playwright
 npx playwright install
+
 Executar todos os testes
 npx playwright test
+
 Executar testes específicos
 npx playwright test --grep "nome do cenário"
-
-📎 Links utilizados
-SauceDemo: https://www.saucedemo.com/
-BrasilAPI: https://brasilapi.com.br/docs
 
 👩‍💻 Autora
 Ana Paula Maroubo

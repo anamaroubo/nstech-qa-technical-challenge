@@ -61,9 +61,41 @@ Dado que o usuário está logado
 Quando realiza logout
 Então o sistema deve redirecionar para a tela de login
 
-## Abordagem de Testes - Front-end
+Cenário: Manter sessão após refresh
+Dado que o usuário está logado
+Quando atualiza a página
+Então deve permanecer logado
+E continuar na página de produtos
 
-Para os testes de front-end, foram utilizadas técnicas de testes baseados em fluxo do usuário, partição de equivalência e análise de valor limite.
+Cenário: Impedir acesso direto à página de produtos sem login
+Dado que o usuário não está autenticado
+Quando tenta acessar /inventory diretamente
+Então deve ser redirecionado para login
+
+Cenário: Manter itens no carrinho após navegação
+Dado que o usuário adicionou um produto ao carrinho
+Quando navega entre páginas
+Então o item deve permanecer no carrinho
+
+Cenário: Comportamento do checkout com carrinho vazio
+Dado que o usuário não possui produtos no carrinho
+Quando tenta iniciar o checkout
+Então o sistema permite acessar a etapa de checkout
+E não exibe validação de carrinho vazio
+
+Cenário: Impedir acesso à área autenticada após logout
+Dado que o usuário realizou logout
+Quando tenta acessar /inventory
+Então deve ser redirecionado para login
+
+Cenário: Ordenação mantém consistência após interação
+Dado que os produtos estão ordenados por preço crescente
+Quando adiciona um item ao carrinho
+Então a ordenação deve permanecer aplicada
+
+## Abordagem de Testes - UI
+
+Para os testes de UI, foram utilizadas técnicas de testes baseados em fluxo do usuário, partição de equivalência e análise de valor limite.
 
 A abordagem priorizou os principais fluxos da aplicação, como autenticação, navegação, manipulação de carrinho e finalização de compra, garantindo cobertura do comportamento esperado do usuário.
 

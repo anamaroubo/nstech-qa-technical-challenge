@@ -2,12 +2,13 @@ name: QA Automation Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  tests:
+  ui-tests:
+    name: UI Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -25,16 +26,43 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Front-end tests
-        run: npx playwright test etapa-2/tests/front-end
+      - name: Run UI tests
+        run: npx playwright test stage-2/tests/ui
 
-      - name: Run API tests
-        run: npx playwright test etapa-2/tests/api
-
-      - name: Upload Playwright Report
+      - name: Upload UI Playwright Report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: ui-playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  api-tests:
+    name: API Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run API tests
+        run: npx playwright test stage-2/tests/api
+
+      - name: Upload API Playwright Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: api-playwright-report
           path: playwright-report/
           retention-days: 30

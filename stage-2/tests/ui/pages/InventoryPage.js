@@ -15,8 +15,8 @@ export class InventoryPage {
   }
 
   async removeProductFromCart(productId) {
-  await this.page.click(this.removeFromCartButton(productId));
-}
+    await this.page.click(this.removeFromCartButton(productId));
+  }
   async waitForPage() {
     await this.page.locator(this.inventoryList).waitFor();
   }

@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('BrasilAPI - Performance', () => {
-
   test('Validar tempo de resposta da API', async ({ request }) => {
     const cep = '01001000';
     const startTime = Date.now();
@@ -12,5 +11,4 @@ test.describe('BrasilAPI - Performance', () => {
     expect(response.status()).toBe(200);
     expect(responseTime).toBeLessThan(2000);
   });
-
 });

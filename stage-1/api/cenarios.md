@@ -21,6 +21,7 @@ Cenário: Validar estrutura da resposta do CEP
 Dado que o usuário consulta um CEP válido
 Quando recebe a resposta
 Então o JSON deve conter:
+
 - cep
 - state
 - city
@@ -41,6 +42,25 @@ Então o sistema deve retornar erro
 Cenário: Validar tempo de resposta da API
 Dado que o usuário realiza uma requisição válida
 Então o tempo de resposta deve ser inferior a 2 segundos
+
+Cenário: CEP com caracteres inválidos
+Dado que o usuário informa um CEP com letras ou símbolos
+Quando realiza a requisição
+Então o sistema deve retornar erro
+
+Cenário: CEP com tamanho inválido
+Dado que o usuário informa um CEP com menos de 8 dígitos
+Quando realiza a requisição
+Então o sistema deve retornar erro
+
+Cenário: CNPJ com formatação
+Dado que o usuário informa um CNPJ com máscara (00.000.000/0001-00)
+Quando realiza a requisição
+Então o sistema deve processar corretamente
+
+Cenário: Validar consistencia de resposta para o mesmo CEP
+Dado que o usuário realiza múltiplas requisições para o mesmo CEP
+Então os dados retornados devem ser consistentes
 
 ## Abordagem de Testes - API
 

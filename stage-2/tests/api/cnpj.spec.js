@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { validCnpj, invalidCnpj } from './utils/testData';
+import { validCnpj, invalidCnpj, maskedCnpj } from './data/testData';
 
 test.describe('BrasilAPI - CNPJ', () => {
   test('Consultar CNPJ válido', async ({ request }) => {
@@ -25,5 +25,14 @@ test.describe('BrasilAPI - CNPJ', () => {
 
     expect(body).toHaveProperty('message');
     expect(body.message.toLowerCase()).toContain('cnpj');
+  });
+
+  test('Consultar CNPJ com máscara', async ({ request }) => {
+    const response = await request.get(`/api/cnpj/v1/${maskedCnpj}`);
+
+    expect(response.status()).toBe(404);
+
+    const responseText = await response.text();
+    expect(responseText).toContain('<!DOCTYPE');
   });
 });

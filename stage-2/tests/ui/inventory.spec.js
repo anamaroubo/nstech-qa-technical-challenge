@@ -16,8 +16,19 @@ test.describe('Fluxos de inventário', () => {
     const priceLocator = page.locator('.inventory_item_price');
     await expect(priceLocator.first()).toBeVisible();
     const prices = await priceLocator.allTextContents();
-    const pricesNumber = prices.map(p => Number(p.replace('$', '').trim()));
+    const pricesNumber = prices.map((p) => Number(p.replace('$', '').trim()));
     const sortedPrices = [...pricesNumber].sort((a, b) => a - b);
     expect(pricesNumber).toEqual(sortedPrices);
+  });
+
+  test('Manter sessão após refresh', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
+
+    await inventoryPage.waitForPage();
+
+    await page.reload();
+
+    await inventoryPage.waitForPage();
+    await expect(page).toHaveURL(/inventory/);
   });
 });

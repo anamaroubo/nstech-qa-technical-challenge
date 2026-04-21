@@ -2,48 +2,33 @@
 
 ## Abordagem geral
 
-A execução do teste foi conduzida de forma incremental, com foco inicial na compreensão do comportamento esperado das aplicações e, posteriormente, na construção de uma automação estruturada, legível e sustentável.
+A execução do teste foi conduzida de forma incremental, focando primeiro na compreensão do comportamento das aplicações e, posteriormente, na construção de uma automação estruturada, legível e sustentável.
 
-Na Etapa 1, priorizei a definição de cenários que cobrissem os fluxos mais relevantes, contemplando tanto caminhos positivos quanto negativos. Para a UI, foquei na jornada principal do usuário no SauceDemo, incluindo autenticação, manipulação de carrinho, checkout e ordenação de produtos. Para a API, foquei na validação funcional, tratamento de entradas inválidas, estrutura das respostas e tempo de resposta.
+Na Etapa 1, priorizei cenários que cobrissem os fluxos de maior valor. Para a UI, foquei na jornada de compra do SauceDemo (autenticação, carrinho, checkout e ordenação). Para a API, foquei na validação funcional, tratamento de erros (400/404), estrutura de contratos e performance.
 
-Na Etapa 2, a estratégia foi automatizar os cenários de forma progressiva. Inicialmente, validei o funcionamento básico dos testes e, em seguida, evoluí a estrutura com foco em manutenção e escalabilidade. Optei por não começar com uma arquitetura complexa, priorizando estabilidade e clareza antes de aplicar boas práticas como Page Object Model, centralização de dados e uso de `baseURL`.
+Na Etapa 2, a estratégia foi automação progressiva. Iniciei com validações básicas e evolui para uma arquitetura robusta utilizando Page Object Model (POM), centralização de dados de teste, uso de `baseURL` e hooks como `beforeEach` para otimização do tempo de execução.
 
 ---
 
 ## Estratégia de cobertura
 
-Além dos fluxos principais, a cobertura foi orientada por cenários que representam maior risco para o negócio e para a experiência do usuário.
+Além dos caminhos felizes, a cobertura focou em cenários de risco e experiência do usuário:
 
-Foram priorizados testes relacionados a:
-
-- Controle de acesso a áreas autenticadas (acesso direto sem login)
-- Validação de sessão (persistência após refresh e invalidação após logout)
-- Comportamentos de borda (como início de checkout com carrinho vazio)
-- Validação de entradas inválidas na API (formato, tamanho e caracteres)
-- Consistência e confiabilidade dos dados retornados
-- Tempo de resposta das requisições
-
-Essa abordagem buscou equilibrar cobertura funcional com testes que agregam valor real na identificação de riscos, evitando cenários redundantes ou de baixo impacto.
+- Segurança: Controle de acesso a áreas autenticadas e invalidação de sessão após logout.
+- Resiliência: Persistência de dados após refresh de página e invalidação de sessão após logout.
+- Borda: Comportamentos como início de checkout com carrinho vazio.
+- Robustez de API: Validação de entradas inválidas (formato, tamanho e caracteres) e consistência de dados (idempotência).
+- Performance: Garantia de que os tempos de resposta da API estão dentro do SLA esperado (<2s).
 
 ---
 
-## Escolha das técnicas de teste
+## Escolha das Técnicas e Ferramentas
 
-Para a UI, utilizei principalmente testes baseados em fluxo do usuário, partição de equivalência e análise de valor limite. Essas técnicas foram escolhidas por se adequarem ao contexto de uma aplicação centrada em interação e navegação, permitindo validar tanto os principais caminhos quanto cenários de erro, como credenciais inválidas, usuário bloqueado e ausência de preenchimento de campos obrigatórios.
+Utilizei Playwright com JavaScript para ambas as frentes (UI e API). A escolha do Playwright se justifica pela estabilidade (auto-waiting), excelentes recursos de debug e pela possibilidade de manter uma stack unificada, facilitando a manutenção do projeto.
 
-Para a API, utilizei partição de equivalência, testes negativos e validação de contrato. A partição foi aplicada na separação entre dados válidos, inválidos e inexistentes. A validação de contrato garantiu a estrutura esperada das respostas, especialmente no endpoint de CEP. Também incluí testes de performance e consistência de resposta, ampliando a visão de qualidade além do comportamento funcional.
+UI: Apliquei testes baseados em fluxo e análise de valor limite (campos obrigatórios). O uso do padrão POM desacoplou a lógica de interação da lógica de validação.
 
----
-
-## Escolha das ferramentas
-
-Optei por utilizar Playwright com JavaScript tanto para UI quanto para API.
-
-Na UI, a escolha do Playwright se deve à sua robustez para testes end-to-end, estabilidade, boa experiência de debug e recursos nativos como screenshots, vídeos e trace.
-
-Para API, optei por manter a mesma ferramenta, aproveitando a capacidade de realizar requisições HTTP diretamente. Essa decisão reduziu a complexidade da stack, manteve consistência no projeto e facilitou a manutenção.
-
-O uso de JavaScript foi natural pela integração com o Playwright e pela simplicidade e legibilidade na implementação dos testes.
+API: Foquei em Testes de Contrato e Testes Negativos, garantindo que a API responda corretamente a requisições malformadas, além de validar a performance e a consistência das respostas.
 
 ---
 
@@ -62,7 +47,7 @@ Durante a execução, os principais critérios considerados foram:
 
 ## Decisões de arquitetura
 
-Na UI, organizei os testes por feature (`login`, `inventory`, `cart` e `checkout`) e apliquei o padrão Page Object Model para desacoplar a lógica de interação da lógica de validação. Isso tornou os testes mais legíveis, reutilizáveis e menos sensíveis a mudanças na interface.
+Na UI, organizei os testes por feature (`login`, `inventory/products`, `cart` e `checkout`) e apliquei o padrão Page Object Model para desacoplar a lógica de interação da lógica de validação. Isso tornou os testes mais legíveis, reutilizáveis e menos sensíveis a mudanças na interface.
 
 Na API, organizei os testes por domínio (`cep`, `cnpj` e `performance`) e centralizei os dados de teste em um arquivo específico, facilitando manutenção e entendimento.
 
@@ -70,7 +55,7 @@ Também implementei uma pipeline no GitHub Actions para execução automatizada 
 
 ---
 
-## Pontos de atenção identificados
+## Pontos de Atenção e Melhorias
 
 Durante a execução dos testes, foi identificado que a aplicação permite iniciar o fluxo de checkout mesmo quando o carrinho está vazio.
 
@@ -87,6 +72,4 @@ Essa análise evidencia a importância de alinhar regras de negócio com o compo
 
 ## Considerações finais
 
-A abordagem adotada buscou equilibrar cobertura, organização e pragmatismo. Mais do que automatizar cenários, a preocupação foi estruturar a solução de forma que ela seja legível, sustentável e preparada para evolução.
-
-O processo seguiu uma lógica incremental: validar primeiro os fluxos essenciais, estabilizar os testes e, em seguida, evoluir a arquitetura com boas práticas. Essa forma de trabalho reflete minha atuação prática em QA, com foco não apenas na execução de testes, mas na construção de qualidade de forma contínua e estratégica.
+O processo seguiu uma lógica de qualidade contínua: validar o essencial, estabilizar a execução e evoluir a arquitetura. Mais do que automação, a entrega reflete uma preocupação com a sustentabilidade do código e a clareza da documentação para o time de desenvolvimento.

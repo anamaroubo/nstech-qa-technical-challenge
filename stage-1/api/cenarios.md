@@ -1,75 +1,95 @@
-etapa-1/api/cenarios.md
+Cenários de Teste - API (BrasilAPI)
 
-Cenário: Consultar CEP válido
-Dado que o usuário possui um CEP válido
-Quando ele realiza uma requisição para o endpoint de CEP
-Então o sistema deve retornar status 200
-E deve retornar os dados do endereço corretamente
+## 1. Consulta de CEP
 
-Cenário: Consultar CEP inexistente
-Dado que o usuário informa um CEP inexistente
-Quando realiza a requisição
-Então o sistema deve retornar erro
-E mensagem informando que o CEP não foi encontrado
+**Cenário: Consultar CEP válido**
 
-Cenário: Consultar CEP com formato inválido
-Dado que o usuário informa um CEP em formato inválido
-Quando realiza a requisição
-Então o sistema deve retornar erro 400
+- **Dado** que o usuário possui um CEP válido
+- **Quando** ele realiza uma requisição para o endpoint de CEP
+- **Então** o sistema deve retornar status 200
+- **E** deve retornar os dados do endereço corretamente
 
-Cenário: Validar estrutura da resposta do CEP
-Dado que o usuário consulta um CEP válido
-Quando recebe a resposta
-Então o JSON deve conter:
+**Cenário: Consultar CEP inexistente**
 
-- cep
-- state
-- city
-- neighborhood
-- street
+- **Dado** que o usuário informa um CEP inexistente
+- **Quando** realiza a requisição
+- **Então** o sistema deve retornar status 404
+- **E** a mensagem contendo a palavra "erro"
 
-Cenário: Consultar CNPJ válido
-Dado que o usuário possui um CNPJ válido
-Quando realiza a requisição
-Então o sistema deve retornar status 200
-E os dados da empresa corretamente
+**Cenário: Consultar CEP com formato inválido**
 
-Cenário: Consultar CNPJ inválido
-Dado que o usuário informa um CNPJ inválido
-Quando realiza a requisição
-Então o sistema deve retornar erro
+- **Dado** que o usuário informa um CEP em formato inválido (ex: alfanumérico)
+- **Quando** realiza a requisição
+- **Então** o sistema deve retornar erro 400
+- **E** a mensagem de erro deve conter a palavra "cep"
 
-Cenário: Validar tempo de resposta da API
-Dado que o usuário realiza uma requisição válida
-Então o tempo de resposta deve ser inferior a 2 segundos
+**Cenário: Consultar CEP caracteres inválidos**
 
-Cenário: CEP com caracteres inválidos
-Dado que o usuário informa um CEP com letras ou símbolos
-Quando realiza a requisição
-Então o sistema deve retornar erro
+- **Dado** que o usuário informa um CEP inválido (ex: 12A45-6@)
+- **Quando** realiza a requisição
+- **Então** o sistema deve retornar erro 400
+- **E** a mensagem de erro deve conter a palavra "cep"
 
-Cenário: CEP com tamanho inválido
-Dado que o usuário informa um CEP com menos de 8 dígitos
-Quando realiza a requisição
-Então o sistema deve retornar erro
+**Cenário: Consultar CEP com tamanho inválido**
 
-Cenário: CNPJ com formatação
-Dado que o usuário informa um CNPJ com máscara (00.000.000/0001-00)
-Quando realiza a requisição
-Então o sistema deve processar corretamente
+- **Dado** que o usuário informa um CEP com menos de 8 dígitos
+- **Quando** realiza a requisição
+- **Então** o sistema deve retornar erro 400
+- **E** a mensagem de erro deve conter a palavra "cep"
 
-Cenário: Validar consistencia de resposta para o mesmo CEP
-Dado que o usuário realiza múltiplas requisições para o mesmo CEP
-Então os dados retornados devem ser consistentes
+**Cenário: Validar consistência de resposta para o mesmo CEP**
+
+- **Dado** que o usuário realiza múltiplas requisições para o mesmo CEP
+- **Então** os dados retornados em todas as chamadas devem ser idênticos
+
+## 2. Consulta de CNPJ
+
+**Cenário: Consultar CNPJ válido**
+
+- **Dado** que o usuário possui um CNPJ válido (apenas números)
+- **Quando** realiza a requisição
+- **Então** o sistema deve retornar status 200
+- **E** os dados da empresa (Razão Social e CNPJ) corretamente
+
+**Cenário: CNPJ com máscara**
+
+- **Dado** que o usuário informa um CNPJ com máscara (00.000.000/0001-00) na URL
+- **Quando** realiza a requisição
+- **Então** o sistema deve retornar status 404 (formato não suportado via URL)
+
+**Cenário: Consultar CNPJ inválido/malformado**
+
+- **Dado** que o usuário informa um CNPJ inválido
+- **Quando** realiza a requisição
+- **Então** o sistema deve retornar erro 400
+- **E** a mensagem de erro deve conter a palavra "CNPJ"
+
+**Cenário: Validar campos essenciais do retorno de CNPJ (Contrato)**
+
+- **Dado** que o usuário consulta um CNPJ válido
+- **Então** a resposta deve obrigatoriamente conter os campos: nome_fantasia, cnae_fiscal, logradouro, numero, bairro e uf
+
+## 3. Performance
+
+**Cenário: Validar tempo de resposta da API para consulta de CEP**
+
+- **Dado** que o sistema está operante e acessível
+- **Quando** o usuário realiza uma requisição válida para um CEP válido
+- **Então** o tempo total de resposta deve ser inferior a 2000ms (2 segundos)
+- **E** o status da resposta deve ser 200
+
+**Cenário: Validar tempo de resposta da API para consulta de CNPJ**
+
+- **Dado** que o sistema está operante e acessível
+- **Quando** o usuário realiza uma requisição válida para um CNPJ válido
+- **Então** o tempo total de resposta deve ser inferior a 2000ms (2 segundos)
+- **E** o status da resposta deve ser 200
 
 ## Abordagem de Testes - API
 
-Para os testes de API, foram utilizadas as técnicas de partição de equivalência, análise de valor limite e validação de contrato.
+Para os testes de API, foram utilizadas as técnicas de **partição de equivalência**, **análise de valor limite** e **validação de contrato**.
 
-A partição de equivalência foi aplicada na separação entre entradas válidas e inválidas (ex: CEP válido, inexistente e com formato incorreto).
-
-A análise de valor limite foi considerada para validar formatos de entrada (quantidade de caracteres, estrutura de dados).
-
-Além disso, foi aplicada validação de contrato para garantir que a estrutura da resposta da API esteja consistente, independente dos dados retornados.
-
-Também foram considerados cenários de erro e tempo de resposta, garantindo maior confiabilidade e robustez da API.
+- **Partição de Equivalência:** Aplicada na separação entre entradas válidas e inválidas.
+- **Análise de Valor Limite:** Considerada para validar formatos de entrada (quantidade de dígitos do CEP).
+- **Validação de Contrato:** Garante que a estrutura da resposta (JSON) e campos essenciais estejam presentes.
+- **Testes de Performance:** Verificação de tempo de resposta (latency) para garantir a confiabilidade do serviço.

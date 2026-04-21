@@ -1,104 +1,122 @@
-etapa-1/front-end/cenarios.md
+Cenários de Teste - UI (Sauce Demo)
 
-Cenário: Login com credenciais válidas
-Dado que o usuário acessa a página de login
-Quando informa usuário e senha válidos
-E clica no botão "Login"
-Então o sistema deve redirecionar para a página de produtos
-E exibir a lista de produtos
+## 1. Autenticação e Segurança
 
-Cenário: Impedir login com usuário bloqueado
-Dado que o usuário está na página de login
-Quando informa um usuário bloqueado
-E tenta acessar o sistema
-Então o sistema deve exibir mensagem de erro
-E não permitir o acesso
+**Cenário: Login com credenciais válidas**
 
-Cenário: Exibir erro ao realizar login com credenciais inválidas
-Dado que o usuário está na página de login
-Quando informa credenciais inválidas
-E clica em "Login"
-Então o sistema deve exibir mensagem de erro
-E permanecer na tela de login
+- **Dado** que o usuário está na página de login
+- **Quando** insere um nome de usuário e senha válidos
+- **Então** o sistema deve redirecioná-lo para a página de produtos
+- **E** a lista de produtos deve estar visível
 
-Cenário: Adicionar produto ao carrinho
-Dado que o usuário está logado na página de produtos
-Quando adiciona um produto ao carrinho
-Então o contador do carrinho deve ser atualizado
-E o produto deve ser incluído no carrinho
+**Cenário: Impedir login com usuário bloqueado**
 
-Cenário: Remover produto do carrinho
-Dado que o usuário possui um produto no carrinho
-Quando remove o produto
-Então o produto deve ser removido
-E o contador do carrinho deve ser atualizado
+- **Dado** que o usuário tenta logar com uma conta bloqueada
+- **Quando** clica no botão de login
+- **Então** o sistema deve exibir mensagem de erro
 
-Cenário: Visualizar produtos no carrinho
-Dado que o usuário adicionou produtos ao carrinho
-Quando acessa a página do carrinho
-Então os produtos devem ser exibidos corretamente
+**Cenário: Exibir erro ao realizar login com credenciais inválidas**
 
-Cenário: Finalizar compra com dados válidos
-Dado que o usuário possui produtos no carrinho
-Quando inicia o checkout
-E preenche os dados obrigatórios corretamente
-E confirma a compra
-Então o sistema deve exibir mensagem de sucesso
+- **Dado** que o usuário insere dados de acessos incorretos
+- **Quando** clica no botão de login
+- **Então** o sistema deve exibir uma mensagem de erro indicando que as credenciais não correspondem
 
-Cenário: Validar campos obrigatórios no checkout
-Dado que o usuário está na etapa de checkout
-Quando tenta avançar sem preencher os campos obrigatórios
-Então o sistema deve exibir mensagens de erro
-E impedir o avanço
+**Cenário: Impedir acesso direto à página de produtos sem login**
 
-Cenário: Ordenar produtos por preço crescente
-Dado que o usuário está na página de produtos
-Quando seleciona a ordenação por menor preço
-Então os produtos devem ser exibidos em ordem crescente de valor
+- **Dado** que um usuário não autenticado tenta acessar a URL /inventory.html diretamente
+- **Quando** a página carrega
+- **Então** o sistema deve redirecionar para página inicial (login)
 
-Cenário: Realizar logout
-Dado que o usuário está logado
-Quando realiza logout
-Então o sistema deve redirecionar para a tela de login
+**Cenário: Realizar logout**
 
-Cenário: Manter sessão após refresh
-Dado que o usuário está logado
-Quando atualiza a página
-Então deve permanecer logado
-E continuar na página de produtos
+- **Dado** que o usuário está autenticado
+- **Quando** ele seleciona a opção "Logout" no menu lateral
+- **Então** o sistema deve encerrar a sessão e retornar à tela de login
 
-Cenário: Impedir acesso direto à página de produtos sem login
-Dado que o usuário não está autenticado
-Quando tenta acessar /inventory diretamente
-Então deve ser redirecionado para login
+**Cenário: Impedir acesso à área autenticada após logout**
 
-Cenário: Manter itens no carrinho após navegação
-Dado que o usuário adicionou um produto ao carrinho
-Quando navega entre páginas
-Então o item deve permanecer no carrinho
+- **Dado** que o usuário acabou de realizar logout
+- **Quando** ele tenta voltar para a página anterior no navegador
+- **Então** o sistema deve garantir que ele permaneça na tela de login ou seja redirecionado por falta de sessão
 
-Cenário: Comportamento do checkout com carrinho vazio
-Dado que o usuário não possui produtos no carrinho
-Quando tenta iniciar o checkout
-Então o sistema permite acessar a etapa de checkout
-E não exibe validação de carrinho vazio
+## 2. Produtos e Carrinho
 
-Cenário: Impedir acesso à área autenticada após logout
-Dado que o usuário realizou logout
-Quando tenta acessar /inventory
-Então deve ser redirecionado para login
+**Cenário: Ordenar produtos por preço crescente**
 
-Cenário: Ordenação mantém consistência após interação
-Dado que os produtos estão ordenados por preço crescente
-Quando adiciona um item ao carrinho
-Então a ordenação deve permanecer aplicada
+- **Dado** que o usuário está na página de produtos
+- **Quando** seleciona a ordenação por menor preço
+- **Então** os produtos devem ser exibidos em ordem crescente de valor
+
+**Cenário: Ordenação mantém consistência após interação**
+
+- **Dado** que os produtos estão ordenados por preço crescente
+- **Quando** adiciona um item ao carrinho
+- **Então** a ordenação deve permanecer aplicada
+
+**Cenário: Adicionar produtos ao carrinho**
+
+- **Dado** que o usuário está logado na página de produtos
+- **Quando** adiciona um produto ao carrinho
+- **Então** o contador do carrinho deve ser atualizado
+- **E** o produto deve ser incluído no carrinho
+
+**Cenário: Remover produto do carrinho**
+
+- **Dado** que o usuário possui um produto no carrinho
+- **Quando** remove o produto
+- **Então** o produto deve ser removido
+- **E** o contador do carrinho deve ser atualizado
+
+**Cenário: Visualizar produtos no carrinho**
+
+- **Dado** que o usuário adicionou produtos ao carrinho
+- **Quando** acessa a página do carrinho
+- **Então** os produtos devem ser exibidos corretamente
+
+**Cenário: Manter itens no carrinho após navegação**
+
+- **Dado** que o usuário adicionou produtos ao carrinho
+- **Quando** navega entre páginas
+- **Então** o item deve permanecer no carrinho
+
+**Cenário: Manter sessão após refresh**
+
+- **Dado** que o usuário acabou de realizar logout
+- **Quando** ele tenta voltar para a página anterior no navegador
+- **Então** o sistema deve garantir que ele permaneça na tela de login ou seja redirecionado por falta de sessão
+
+## 3. Checkout e Finalização
+
+**Cenário: Finalizar compra com dados válidos**
+
+- **Dado** que o usuário possui produtos no carrinho
+- **Quando** inicia o checkout
+- **E** preenche os dados obrigatórios corretamente
+- **E** confirma a compra
+- **Então** o sistema deve exibir mensagem de sucesso
+
+**Cenário: Validar campos obrigatórios no checkout**
+
+- **Dado** que o usuário está na etapa de checkout
+- **Quando** tenta avançar sem preencher os campos obrigatórios
+- **Então** o sistema deve exibir mensagens de erro
+- **E** impedir o avanço
+
+**Cenário: Comportamento do checkout com carrinho vazio**
+
+- **Dado** que o usuário não possui produtos no carrinho
+- **Quando** tenta iniciar o checkout
+- **Então** o sistema permite acessar a etapa de checkout
+- **E** não exibe validação de carrinho vazio
 
 ## Abordagem de Testes - UI
 
 Para os testes de UI, foram utilizadas técnicas de testes baseados em fluxo do usuário, partição de equivalência e análise de valor limite.
 
-A abordagem priorizou os principais fluxos da aplicação, como autenticação, navegação, manipulação de carrinho e finalização de compra, garantindo cobertura do comportamento esperado do usuário.
+Fluxos Principais: A abordagem priorizou os principais fluxos da aplicação, como autenticação, navegação, manipulação de carrinho e finalização de compra.
 
-A partição de equivalência foi aplicada na validação de credenciais (válidas, inválidas e usuários bloqueados), enquanto a análise de valor limite foi considerada em validações de campos obrigatórios no checkout.
+Partição de Equivalência: Aplicada na validação de credenciais (válidas, inválidas e usuários bloqueados).
 
-Também foram considerados cenários negativos e validações de interface, garantindo feedback adequado ao usuário e maior confiabilidade da aplicação.
+Análise de Valor Limite: Considerada em validações de campos obrigatórios no checkout e regras de interface.
+
+Resiliência: Validação de persistência de estado (refresh e navegação) e segurança de rotas (acesso direto).

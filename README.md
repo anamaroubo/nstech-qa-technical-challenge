@@ -1,218 +1,121 @@
 # 🧪 QA Technical Challenge - nstech
 
-Este repositório contém a resolução do teste técnico para a vaga de Quality Assurance, contemplando cenários de teste, automação e descrição da abordagem técnica adotada.
+Este repositório contém a resolução do desafio técnico para a vaga de Quality Assurance, contemplando cenários de teste, automação estruturada e a descrição da abordagem estratégica adotada.
 
 ---
 
 ## 📌 Objetivo
 
-Demonstrar habilidades em:
+Demonstrar competências em:
 
-- Escrita de cenários de teste (front-end e API)
-- Aplicação de técnicas de QA
-- Automação de testes
-- Organização e boas práticas
-- Clareza na tomada de decisão
+- Escrita de cenários de teste (Gherkin/BDD).
+- Aplicação de técnicas de QA (Partição de Equivalência, Valor Limite e Contrato).
+- Automação de testes de UI e API com Playwright.
+- Organização de arquitetura (POM) e boas práticas de código.
+- Configuração de CI/CD com Github Actions.
 
 ---
 
 ## 🧱 Estrutura do Projeto
 
-## 🧱 Estrutura do Projeto
-
-````text
 .
-├── .github/
-│   └── workflows/
-│       └── playwright.yml
-│
-├── evidence/
-│   └── README.md
-│
-├── stage-1/
-│   ├── api/
-│   │   └── cenarios.md
-│   └── ui/
-│       └── cenarios.md
-│
-├── stage-2/
-│   └── tests/
-│       ├── api/
-│       │   ├── cep.spec.js
-│       │   ├── cnpj.spec.js
-│       │   ├── performance.spec.js
-│       │   └── data/
-│       │       └── testData.js
-│       │
-│       └── ui/
-│           ├── login.spec.js
-│           ├── inventory.spec.js
-│           ├── cart.spec.js
-│           ├── checkout.spec.js
-│           ├── pages/
-│           │   ├── LoginPage.js
-│           │   ├── InventoryPage.js
-│           │   └── CheckoutPage.js
-│           └── utils/
-│               └── auth.js
-│
-├── stage-3/
-│   └── abordagem.md
-│
-├── .gitignore
-├── .prettierrc
-├── package.json
-├── package-lock.json
-├── playwright.config.js
-└── README.md
+├── .github/workflows/ # Configuração da Pipeline (CI)
+├── evidence/ # Documentação sobre evidências
+├── stage-1/ # Planejamento
+│ ├── api/cenarios.md # 5 cenários CEP, 4 CNPJ, Performance
+│ └── ui/cenarios.md # Fluxos SauceDemo
+├── stage-2/ # Automação
+│ └── tests/
+│ ├── api/ # Testes de API (CEP, CNPJ, Performance)
+│ │ └── data/ # Massa de dados (testData.js)
+│ └── ui/ # Testes de UI (Login, Inventory, Cart, Checkout)
+│ ├── pages/ # Page Object Model (POM)
+│ └── utils/ # Helpers (auth.js)
+├── stage-3/ # Documentação Técnica
+│ └── abordagem.md # Estratégia e tomada de decisão
+├── playwright.config.js # Configurações globais (BaseURL, Retries)
+└── README.md # Guia do projeto
 
 ---
 
-## ✅ Etapa 1 — Escrita de Cenários
+## ✅ Etapa 1 — Cenários de Teste
 
-Foram definidos cenários de teste para:
+Planejamento detalhado utilizando técnicas de QA para garantir cobertura técnica e de negócio:
 
-### 🔹 UI (SauceDemo)
+- UI: Fluxos de autenticação, segurança de rotas, persistência de sessão, manipulação de carrinho (adicionar/remover) e checkout completo.
 
-- Login (válido, inválido, bloqueado)
-- Carrinho (adicionar, remover, visualizar)
-- Checkout (fluxo completo e validações)
-- Ordenação de produtos
-
-### 🔹 API (BrasilAPI)
-
-- Consulta de CEP (válido, inválido, inexistente)
-- Consulta de CNPJ (válido e inválido)
-- Validação de estrutura de resposta
-- Validação de tempo de resposta
-
-### 🧠 Técnicas aplicadas
-
-- Partição de equivalência
-- Análise de valor limite
-- Testes baseados em fluxo
-- Testes negativos
-- Validação de contrato (API)
+- API: Validações de status code, mensagens de erro (400/404), validação de contrato JSON e performance de resposta.
 
 ---
 
 ## 🤖 Etapa 2 — Automação
 
-### 🔹 UI
-
-Automação utilizando **Playwright + JavaScript**
+### 🔹 UI (Playwright + JavaScript)
 
 #### 🧩 Arquitetura adotada
 
-- Separação dos testes por feature:
-  - `login.spec.js`
-  - `inventory.spec.js`
-  - `cart.spec.js`
-  - `checkout.spec.js`
+- Arquitetura POM: Implementação do Page Object Model para desacoplar a lógica de automação da estrutura da página.
 
-- Utilização do padrão **Page Object Model (POM)**:
-  - `LoginPage`
-  - `InventoryPage`
-  - `CheckoutPage`
+- Manutenibilidade: Uso de beforeEach para otimizar fluxos que exigem login prévio e centralização de seletores.
 
-- Reaproveitamento de código:
-  - Função de login centralizada (`utils/auth`)
-  - Uso de `beforeEach` para cenários autenticados
+- Resiliência: Validações de URL e estado da UI após interações (como refresh e ordenação).
 
-#### 🎯 Benefícios da abordagem
+### 🔹 API (Playwright API Testing)
 
-- Melhor legibilidade dos testes
-- Redução de duplicação de código
-- Facilidade de manutenção
-- Escalabilidade para novos cenários
-
----
-
-### 🔹 API
-
-Automação utilizando **Playwright (API Testing)**
-
-#### 📌 Cobertura
-
-- ✅ Validação de status code
-- ✅ Testes positivos e negativos
-- ✅ Validação de contrato (estrutura JSON)
-- ✅ Teste de performance (tempo de resposta)
-
-#### 🧠 Boas práticas aplicadas
-
-- Uso de `baseURL` no config
-- Separação por domínio (`cep`, `cnpj`)
-- Centralização de dados em `testData.js`
-- Testes independentes e reutilizáveis
+- Independência: Testes atômicos que não dependem de estados de outros testes.
+- Performance: Validação de SLA de resposta inferior a 2 segundos.
+- Contrato: Verificação rigorosa da estrutura de dados retornada pela BrasilAPI.
 
 ---
 
 ## 🔁 Integração Contínua (CI)
 
-Foi configurada uma pipeline utilizando **GitHub Actions** para execução automatizada dos testes.
+Pipeline configurada via GitHub Actions (playwright.yml).
 
-A pipeline é executada a cada push e realiza:
-
-- Instalação de dependências
-- Instalação dos browsers do Playwright
-- Execução dos testes de front-end e API
-- Geração de relatórios
-
-Essa abordagem garante maior confiabilidade na execução e permite identificar falhas rapidamente em ambiente controlado.
+- Execução automatizada a cada `push`.
+- Instalação de ambiente, browsers e execução de todos os testes (UI e API).
+- Armazenamento de relatórios e evidências em caso de falha.
 
 ---
 
-## 📁 Evidências
+## 📁 Evidências de Execução
 
-As evidências de execução dos testes são geradas automaticamente pelo Playwright.
+As evidências são geradas automaticamente pelo framework:
 
-### 🔹 Execução local
+Local: npx playwright show-report para visualizar vídeos, screenshots e traces.
 
-Ao rodar os testes, são gerados:
+CI: Disponíveis no artefato da execução na aba Actions do GitHub.
 
-- Screenshots em caso de falha
-- Vídeos das execuções
-- Trace para debugging
+### ▶️ Como executar os testes
+
+1. Instalar browswes do Playwright:
+
+```bash
+npm install
+```
+
+2. Instalar browswes do Playwright:
+
+```bash
+npx playwright install
+```
+
+3. Executar todos os testes:
 
 ```bash
 npx playwright test
-npx playwright show-report
+```
 
-🔹 Execução em CI
+4. Executar apenas testes de UI e API:
 
-Os resultados das execuções podem ser acessados na aba Actions do GitHub, incluindo:
-
-Logs detalhados
-Status da execução
-Relatórios gerados
-
-As evidências não foram versionadas no repositório para evitar arquivos pesados e manter o projeto leve.
-
-🧠 Etapa 3 — Abordagem
-
-Descrição da estratégia adotada durante o desenvolvimento, incluindo:
-
-Critérios de escolha de ferramentas
-Estruturação dos testes
-Estratégia de cobertura
-Decisões técnicas e trade-offs
-
-📎 APIs e aplicações utilizadas
-SauceDemo: https://www.saucedemo.com/
-BrasilAPI: https://brasilapi.com.br/docs
-
-▶️ Como executar os testes
-Instalar dependências
-npm install
-Instalar browsers do Playwright
-npx playwright install
-Executar todos os testes
-npx playwright test
-Executar testes específicos
-npx playwright test --grep "nome do cenário"
+```bash
+npx playwright test stage-2/tests/ui
+npx playwright test stage-2/tests/api
+```
 
 👩‍💻 Autora
 Ana Paula Maroubo
 
-````
+```
+
+```

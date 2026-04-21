@@ -11,14 +11,17 @@ test.describe('Fluxos de checkout', () => {
   test('Finalizar compra com dados válidos', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     const checkoutPage = new CheckoutPage(page);
+
     await inventoryPage.waitForPage();
     await inventoryPage.addProductToCart('sauce-labs-backpack');
     await inventoryPage.openCart();
+
     await checkoutPage.startCheckout();
     await checkoutPage.fillInformation('Ana', 'Teste', '12345');
     await checkoutPage.continue();
     await checkoutPage.finish();
-    await expect(checkoutPage.getSuccessMessage()).toHaveText(
+
+    await expect(checkoutPage.successMessage).toHaveText(
       'Thank you for your order!'
     );
   });
@@ -26,29 +29,41 @@ test.describe('Fluxos de checkout', () => {
   test('Validar campos obrigatórios no checkout', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     const checkoutPage = new CheckoutPage(page);
+
     await inventoryPage.waitForPage();
     await inventoryPage.addProductToCart('sauce-labs-backpack');
     await inventoryPage.openCart();
     await checkoutPage.startCheckout();
+
     await checkoutPage.continue();
-    await expect(checkoutPage.getErrorMessage()).toHaveText(
+    await expect(checkoutPage.errorMessage).toHaveText(
       'Error: First Name is required'
     );
 
-    await expect(page).toHaveURL(/checkout-step-one/);
+    await checkoutPage.firstNameInput.fill('Ana');
+    await checkoutPage.continue();
+    await expect(checkoutPage.errorMessage).toHaveText(
+      'Error: Last Name is required'
+    );
+
+    await checkoutPage.lastNameInput.fill('Paula');
+    await checkoutPage.continue();
+    await expect(checkoutPage.errorMessage).toHaveText(
+      'Error: Postal Code is required'
+    );
   });
 
   test('Comportamento do checkout com carrinho vazio', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
+    const checkoutPage = new CheckoutPage(page);
 
     await inventoryPage.waitForPage();
     await inventoryPage.openCart();
 
-    await expect(page.locator('.cart_item')).toHaveCount(0);
+    await expect(inventoryPage.cartItems).toHaveCount(0);
 
-    await page.click('[data-test="checkout"]');
+    await checkoutPage.startCheckout();
 
-    await expect(page).toHaveURL(/checkout-step-one/);
-    await expect(page.locator('[data-test="continue"]')).toBeVisible();
+    await expect(checkoutPage.continueButton).toBeVisible();
   });
 });

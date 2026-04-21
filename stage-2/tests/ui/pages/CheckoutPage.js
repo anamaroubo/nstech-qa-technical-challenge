@@ -2,39 +2,31 @@ export class CheckoutPage {
   constructor(page) {
     this.page = page;
 
-    this.checkoutButton = '[data-test="checkout"]';
-    this.firstName = '[data-test="firstName"]';
-    this.lastName = '[data-test="lastName"]';
-    this.postalCode = '[data-test="postalCode"]';
-    this.continueButton = '[data-test="continue"]';
-    this.finishButton = '[data-test="finish"]';
-    this.successMessage = '.complete-header';
-    this.errorMessage = '[data-test="error"]';
+    this.checkoutButton = page.locator('[data-test="checkout"]');
+    this.firstNameInput = page.locator('[data-test="firstName"]');
+    this.lastNameInput = page.locator('[data-test="lastName"]');
+    this.postalCodeInput = page.locator('[data-test="postalCode"]');
+    this.continueButton = page.locator('[data-test="continue"]');
+    this.finishButton = page.locator('[data-test="finish"]');
+    this.successMessage = page.locator('[data-test="complete-header"]');
+    this.errorMessage = page.locator('[data-test="error"]');
   }
 
   async startCheckout() {
-    await this.page.click(this.checkoutButton);
+    await this.checkoutButton.click();
   }
 
   async fillInformation(firstName, lastName, postalCode) {
-    await this.page.fill(this.firstName, firstName);
-    await this.page.fill(this.lastName, lastName);
-    await this.page.fill(this.postalCode, postalCode);
+    await this.firstNameInput.fill(firstName);
+    await this.lastNameInput.fill(lastName);
+    await this.postalCodeInput.fill(postalCode);
   }
 
   async continue() {
-    await this.page.click(this.continueButton);
+    await this.continueButton.click();
   }
 
   async finish() {
-    await this.page.click(this.finishButton);
-  }
-
-  getSuccessMessage() {
-    return this.page.locator(this.successMessage);
-  }
-
-  getErrorMessage() {
-    return this.page.locator(this.errorMessage);
+    await this.finishButton.click();
   }
 }

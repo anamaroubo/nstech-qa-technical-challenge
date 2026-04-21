@@ -1,10 +1,13 @@
 export class LoginPage {
   constructor(page) {
     this.page = page;
-    this.usernameInput = '[data-test="username"]';
-    this.passwordInput = '[data-test="password"]';
-    this.loginButton = '[data-test="login-button"]';
-    this.errorMessage = '[data-test="error"]';
+
+    this.usernameInput = page.locator('[data-test="username"]');
+    this.passwordInput = page.locator('[data-test="password"]');
+    this.loginButton = page.locator('[data-test="login-button"]');
+    this.errorMessage = page.locator('[data-test="error"]');
+    this.menuButton = page.locator('#react-burger-menu-btn');
+    this.logoutLink = page.locator('#logout_sidebar_link');
   }
 
   async goto() {
@@ -12,12 +15,18 @@ export class LoginPage {
   }
 
   async login(username, password) {
-    await this.page.fill(this.usernameInput, username);
-    await this.page.fill(this.passwordInput, password);
-    await this.page.click(this.loginButton);
+    await this.usernameInput.fill(username);
+    await this.passwordInput.fill(password);
+    await this.loginButton.click();
   }
 
-  getErrorMessage() {
-    return this.page.locator(this.errorMessage);
+  async openMenu() {
+    await this.menuButton.click();
+  }
+
+  async logout() {
+    await this.openMenu();
+    await this.logoutLink.waitFor({ state: 'visible' });
+    await this.logoutLink.click();
   }
 }

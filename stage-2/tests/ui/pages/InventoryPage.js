@@ -9,6 +9,7 @@ export class InventoryPage {
     this.productPrice = page.locator('[data-test="inventory-item-price"]');
     this.productName = page.locator('[data-test="inventory-item-name"]');
     this.cartItems = page.locator('[data-test="inventory-item"]');
+    this.productTitle = page.locator('[data-test="title"]');
   }
 
   getAddToCartBtn(productId) {

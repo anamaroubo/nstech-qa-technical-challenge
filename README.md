@@ -18,6 +18,7 @@ Demonstrar competências em:
 
 ## 🧱 Estrutura do Projeto
 
+```text
 .
 ├── .github/workflows/ # Configuração da Pipeline (CI)
 ├── evidence/ # Documentação sobre evidências
@@ -35,6 +36,7 @@ Demonstrar competências em:
 │ └── abordagem.md # Estratégia e tomada de decisão
 ├── playwright.config.js # Configurações globais (BaseURL, Retries)
 └── README.md # Guia do projeto
+```
 
 ---
 

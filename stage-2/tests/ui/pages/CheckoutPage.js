@@ -10,6 +10,9 @@ export class CheckoutPage {
     this.finishButton = page.locator('[data-test="finish"]');
     this.successMessage = page.locator('[data-test="complete-header"]');
     this.errorMessage = page.locator('[data-test="error"]');
+    this.cartBadge = page.locator(
+      '[data-test="shopping-cart-link"] .shopping_cart_badge'
+    );
   }
 
   async startCheckout() {

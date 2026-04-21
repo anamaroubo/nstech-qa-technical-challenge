@@ -12,6 +12,7 @@ test.describe('Fluxos de login', () => {
 
     await expect(page).toHaveURL(/inventory/);
     await expect(inventoryPage.inventoryList).toBeVisible();
+    await expect(inventoryPage.productTitle).toHaveText('Products');
   });
 
   test('Impedir login com usuário bloqueado', async ({ page }) => {

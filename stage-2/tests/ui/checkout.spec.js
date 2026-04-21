@@ -24,6 +24,7 @@ test.describe('Fluxos de checkout', () => {
     await expect(checkoutPage.successMessage).toHaveText(
       'Thank you for your order!'
     );
+    await expect(checkoutPage.cartBadge).not.toBeVisible();
   });
 
   test('Validar campos obrigatórios no checkout', async ({ page }) => {

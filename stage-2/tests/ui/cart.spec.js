@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { login } from './utils/auth';
 import { InventoryPage } from './pages/InventoryPage';
-import { CartPage } from './pages/CartPage'; // Importando a nova página
+import { CartPage } from './pages/CartPage';
 
 test.describe('Fluxos de carrinho', () => {
   test.beforeEach(async ({ page }) => {

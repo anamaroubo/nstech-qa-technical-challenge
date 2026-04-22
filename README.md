@@ -102,7 +102,7 @@ npm install
 npx playwright install
 ```
 
-3. Executar todos os testes:
+3. Executar todos os testes (Modo Headless - padrão CI):
 
 ```bash
 npx playwright test
@@ -113,6 +113,12 @@ npx playwright test
 ```bash
 npx playwright test stage-2/tests/ui
 npx playwright test stage-2/tests/api
+```
+
+5. Executar com a Interface Visual (UI Mode - Recomendado para debug):
+
+```bash
+npx playwright test --ui
 ```
 
 👩‍💻 Autora
